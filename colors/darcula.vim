@@ -27,7 +27,7 @@ let s:p={
       \ 'errorMsg': ['#CC666E', 174],
       \ 'error': ['#BC3F3C', 131],
       \ 'warning': ['#A9B7C6', 145],
-      \ 'muted': ['#72737A', 243],
+      \ 'muted': ['#606060', 241],
       \ 'link': ['#287BDE', 32],
       \ 'stdOutput': ['#BBBBBB', 250],
       \ 'lineNumber': ['#606366', 241],
@@ -66,10 +66,11 @@ let s:p={
       \ 'errorStripe': ['#9E2927', 124],
       \ 'warnStripe': ['#BE9117', 136],
       \ 'infoStripe': ['#756D56', 101],
+      \ 'hintStripe': ['#6c7176', 242],
       \ 'typeDef': ['#B9BCD1', 146],
       \ 'menu': ['#46484A', 238],
-      \ 'menuFg': ['#AFB1B3', 249],
-      \ 'menuSel': ['#103A5C', 23],
+      \ 'menuFg': ['#BBBBBB', 250],
+      \ 'menuSel': ['#113A5C', 23],
       \ 'menuSBar': ['#616263', 241],
       \ 'tag': ['#E8BF6A', 180],
       \ 'entity': ['#6D9CBE', 109],
@@ -77,8 +78,8 @@ let s:p={
       \ 'htmlString': ['#A5C261', 143],
       \ 'tsObject': ['#507874', 66],
       \ 'statusLine': ['#3C3F41', 237],
-      \ 'statusLineFg': ['#AEB0B2', 249],
-      \ 'statusLineNC': ['#88898B', 245],
+      \ 'statusLineFg': ['#BBBBBB', 250],
+      \ 'statusLineNC': ['#787878', 243],
       \ 'tabLineSel': ['#4E5254', 239],
       \ 'shCommand': ['#C57633', 137],
       \ 'templateLanguage': ['#232525', 235],
@@ -88,6 +89,8 @@ let s:p={
       \ 'hintBg': ['#3B3B3B', 237],
       \ 'hintFg': ['#787878', 243],
       \ 'wrapGuide': ['#2F2F2F', 236],
+      \ 'UIBorder': ['#616161', 241],
+      \ 'UISelection': ['#0D293E', 17],
       \ 'ANSIBlack': ['#FFFFFF', 231],
       \ 'ANSIRed': ['#FF6B68', 210],
       \ 'ANSIGreen': ['#A8C023', 142],
@@ -151,7 +154,7 @@ endfunction
 
 call s:Hi('Normal', s:p.fg, s:p.bg)
 call s:Hi('ColorColumn', s:p.null, s:p.wrapGuide)
-hi! link Conceal NormalFg
+call s:Hi('Conceal', s:p.muted, s:p.bg)
 call s:Hi('Cursor', s:p.cursor)
 hi! link lCursor Cursor
 hi! link CursorIM Cursor
@@ -209,7 +212,7 @@ hi! link Type Keyword
 call s:Hi('Typedef', s:p.typeDef)
 call s:Hi('Todo', s:p.todo, s:p.null, 'italic')
 hi! link Special PreProc
-call s:Hi('Constant', s:p.constant)
+call s:Hi('Constant', s:p.constant, s:p.null, 'italic')
 call s:Hi('String', s:p.string)
 hi! link Character String
 call s:Hi('Number', s:p.number)
@@ -223,7 +226,28 @@ hi! link Tag Keyword
 call s:Hi('Debug', s:p.debug, s:p.null, 'italic')
 call s:Hi('Function', s:p.function)
 
-" Neovim
+" helper groups
+call s:Hi('docComment', s:p.docComment, s:p.null, 'italic')
+call s:Hi('NormalFg', s:p.fg)
+call s:Hi('GitAddStripe', s:p.addStripe, s:p.addStripe)
+call s:Hi('GitChangeStripe', s:p.changeStripe, s:p.changeStripe)
+call s:Hi('GitDeleteStripe', s:p.deleteStripe, s:p.gutter)
+call s:Hi('CodeError', s:p.null, s:p.codeError)
+call s:Hi('CodeWarning', s:p.null, s:p.codeWarning)
+call s:Hi('CodeInfo', s:p.null, s:p.infoStripe)
+call s:Hi('CodeHint', s:p.hintFg, s:p.hintBg)
+call s:Hi('ErrorSign', s:p.errorStripe, s:p.gutter)
+call s:Hi('WarningSign', s:p.warnStripe, s:p.gutter)
+call s:Hi('InfoSign', s:p.infoStripe, s:p.gutter)
+call s:Hi('HintSign', s:p.hintStripe, s:p.gutter)
+call s:Hi('IdentifierUnderCaret', s:p.null, s:p.identifierUnderCaret)
+call s:Hi('IdentifierUnderCaretWrite', s:p.null, s:p.identifierUnderCaretWrite)
+call s:Hi('InstanceField', s:p.constant)
+call s:Hi('UIDialog', s:p.fg, s:p.statusLine)
+call s:Hi('UIBorder', s:p.UIBorder, s:p.statusLine)
+call s:Hi('UISelection', s:p.null, s:p.UISelection)
+
+" neovim
 if has('nvim')
   " the following code snippet fix an issue with CursorLine hi group
   " see https://github.com/neovim/neovim/issues/9019
@@ -263,23 +287,83 @@ if has('nvim')
   let g:terminal_color_13 = s:p.ANSIBrightMagenta[0]
   let g:terminal_color_14 = s:p.ANSIBrightCyan[0]
   let g:terminal_color_15 = s:p.ANSIWhite[0]
-endif
 
-" helper groups
-call s:Hi('docComment', s:p.docComment, s:p.null, 'italic')
-call s:Hi('NormalFg', s:p.fg)
-call s:Hi('GitAddStripe', s:p.addStripe, s:p.addStripe)
-call s:Hi('GitChangeStripe', s:p.changeStripe, s:p.changeStripe)
-call s:Hi('GitDeleteStripe', s:p.deleteStripe, s:p.gutter)
-call s:Hi('CodeError', s:p.null, s:p.codeError)
-call s:Hi('CodeWarning', s:p.null, s:p.codeWarning)
-call s:Hi('CodeInfo', s:p.null, s:p.infoStripe)
-call s:Hi('CodeHint', s:p.hintFg, s:p.hintBg)
-call s:Hi('ErrorSign', s:p.errorStripe, s:p.gutter)
-call s:Hi('WarningSign', s:p.warnStripe, s:p.gutter)
-call s:Hi('InfoSign', s:p.infoStripe, s:p.gutter)
-call s:Hi('IdentifierUnderCaret', s:p.null, s:p.identifierUnderCaret)
-call s:Hi('IdentifierUnderCaretWrite', s:p.null, s:p.identifierUnderCaretWrite)
+  " nvim-treesitter
+  hi! link TSAnnotation PreProc
+  hi! link TSAttribute PreProc
+  hi! link TSBoolean Keyword
+  hi! link TSCharacter Character
+  hi! link TSComment Comment
+  hi! link TSConstructor Function
+  hi! link TSConditional Keyword
+  hi! link TSConstant Constant
+  hi! link TSConstBuiltin Keyword
+  hi! link TSConstMacro cMacroName
+  hi! link TSError codeError
+  hi! link TSException Keyword
+  hi! link TSField InstanceField
+  hi! link TSFloat Number
+  hi! link TSFunction Function
+  hi! link TSFuncBuiltin Normal
+  hi! link TSFuncMacro cMacroName
+  hi! link TSInclude Keyword
+  hi! link TSKeyword Keyword
+  hi! link TSKeywordFunction Keyword
+  hi! link TSLabel Normal
+  hi! link TSMethod Function
+  hi! link TSNamespace cDataStructure
+  hi! link TSNone Normal
+  hi! link TSNumber Number
+  hi! link TSOperator Normal
+  hi! link TSParameter Normal
+  hi! link TSParameterReference Normal
+  hi! link TSProperty TSField
+  hi! link TSPunctDelimiter Normal
+  hi! link TSPunctBracket Normal
+  hi! link TSPunctSpecial Keyword
+  hi! link TSRepeat Keyword
+  hi! link TSString String
+  hi! link TSStringRegex Number
+  hi! link TSStringEscape Keyword
+  hi! link TSTag htmlTag
+  hi! link TSTagDelimiter htmlTag
+  hi! link TSText Normal
+  call s:Hi('TSStrong', s:p.fg, s:p.null, 'bold')
+  call s:Hi('TSEmphasis', s:p.fg, s:p.null, 'italic')
+  call s:Hi('TSUnderline', s:p.fg, s:p.null, 'underline')
+  call s:Hi('TSStrike', s:p.fg, s:p.null, 'strikethrough')
+  call s:Hi('TSTitle', s:p.fg, s:p.null, 'bold,underline')
+  hi! link TSLiteral Normal
+  hi! link TSURI markdownLinkText
+  hi! link TSNote CodeInfo
+  hi! link TSWarning CodeWarning
+  hi! link TSDanger CodeError
+  hi! link TSType Normal
+  hi! link TSTypeBuiltin Keyword
+  hi! link TSVariable Normal
+  hi! link TSVariableBuiltin Keyword
+
+  " LSP
+  hi! link LspDiagnosticsDefaultError CodeError
+  hi! link LspDiagnosticsDefaultWarning CodeWarning
+  hi! link LspDiagnosticsDefaultInformation CodeInfo
+  hi! link LspDiagnosticsDefaultHint CodeHint
+  hi! link LspDiagnosticsSignError ErrorSign
+  hi! link LspDiagnosticsSignWarning WarningSign
+  hi! link LspDiagnosticsSignInformation InfoSign
+  hi! link LspDiagnosticsSignHint HintSign
+  hi! link LspReferenceText IdentifierUnderCaret
+  hi! link LspReferenceRead IdentifierUnderCaret
+  hi! link LspReferenceWrite IdentifierUnderCaretWrite
+  hi! link LspDiagnosticsUnderlineError CodeError
+  hi! link LspDiagnosticsUnderlineWarning CodeWarning
+  hi! link LspDiagnosticsUnderlineInformation CodeInfo
+  hi! link LspDiagnosticsUnderlineHint CodeHint
+  hi! link LspDiagnosticsFloatingError NormalFloat
+  hi! link LspDiagnosticsFloatingWarning NormalFloat
+  hi! link LspDiagnosticsFloatingInformation NormalFloat
+  hi! link LspDiagnosticsFloatingHint NormalFloat
+endif
 
 " Vim terminal colors (for :terminal)
 if !has('nvim')
@@ -311,7 +395,7 @@ hi! link cPreProcRegion NormalFg
 hi! link cUserLabel NormalFg
 hi! link cDataStructureKeyword Keyword
 call s:Hi('cDataStructure', s:p.cDataStructure)
-call s:Hi('cFunction', s:p.function)
+hi! link cFunction Function
 hi! link cppDestructor cFunction
 hi! link cSemicolon Keyword
 hi! link cComma Keyword
@@ -341,12 +425,12 @@ hi! link rustSigil NormalFg
 hi! link rustSelf Keyword
 call s:Hi('rustLifetime', s:p.rustLifetime, s:p.null, 'italic')
 call s:Hi('rustTypeParameter', s:p.rustLifetime)
-call s:Hi('rustEnumVariant', s:p.constant, s:p.null, 'italic')
+hi! link rustEnumVariant Constant
 hi! link rustModPath NormalFg
 hi! link rustModPathSep NormalFg
 hi! link rustAs Keyword
-call s:Hi('rustConst', s:p.constant, s:p.null, 'italic')
-hi! link rustVarField Constant
+hi! link rustConst Constant
+hi! link rustVarField InstanceField
 
 " Vim
 hi! link vimOption Constant
@@ -365,7 +449,7 @@ hi! link JsFrom Keyword
 hi! link JsOperator NormalFg
 hi! link jsArrowFunction NormalFg
 hi! link jsFuncArgCommas Delimiter
-hi! link jsObjectKey Constant
+hi! link jsObjectKey InstanceField
 hi! link jsTernaryIfOperator NormalFg
 hi! link jsObjectSeparator Keyword
 hi! link jsSpreadOperator NormalFg
@@ -373,7 +457,7 @@ hi! link jsModuleComma Keyword
 hi! link jsClassDefinition NormalFg
 hi! link jsSuper Keyword
 hi! link jsThis Keyword
-hi! link jsObjectProp Constant
+hi! link jsObjectProp InstanceField
 hi! link jsDestructuringNoise Keyword
 hi! link jsClassProperty Function
 hi! link jsBooleanTrue Keyword
@@ -388,17 +472,17 @@ hi! link typescriptBraces NormalFg
 hi! link typescriptDocComment docComment
 hi! link typescriptDocParam docComment
 hi! link typescriptParens NormalFg
-hi! link typescriptOpSymbols Constant
+hi! link typescriptOpSymbols InstanceField
 hi! link typescriptRegexpString Number
 hi! link typescriptSpecial Keyword
-hi! link typescriptLogicSymbols Constant
+hi! link typescriptLogicSymbols InstanceField
 hi! link typescriptExceptions Keyword
 call s:Hi('typescriptDocTags', s:p.docComment, s:p.null, 'bold,italic,underline')
 call s:Hi('typescriptGlobalObjects', s:p.tsObject)
 
 " JSON
 hi! link jsonBraces NormalFg
-hi! link jsonKeyword Constant
+hi! link jsonKeyword InstanceField
 hi! link jsonNoise Keyword
 hi! link jsonKeywordMatch Keyword
 hi! link jsonBoolean Keyword
@@ -421,7 +505,7 @@ hi! link xmlCdata NormalFg
 hi! link xmlCdataCdata xmlCdata
 hi! link xmlCdataStart xmlCdata
 hi! link xmlCdataEnd xmlCdata
-hi! link xmlNamespace Constant
+hi! link xmlNamespace InstanceField
 hi! link xmlAttribPunct NormalFg
 hi! link xmlEqual xmlString
 
@@ -444,7 +528,7 @@ hi! link yamlNodeTag NormalFg
 hi! link yamlNull NormalFg
 
 " Markdown
-call s:Hi('markdownH1', s:p.constant, s:p.null, 'italic')
+hi! link markdownH1 Constant
 hi! link markdownH2 markdownH1
 hi! link markdownH3 markdownH1
 hi! link markdownH4 markdownH1
@@ -519,7 +603,7 @@ hi! link shQuote String
 call s:Hi('shHereDoc', s:p.null, s:p.templateLanguage)
 call s:Hi('shRedir', s:p.fg, s:p.null, 'bold')
 hi! link shDerefSimple NormalFg
-hi! link shCommandSubBQ Constant
+hi! link shCommandSubBQ InstanceField
 hi! link shOption NormalFg
 hi! link shCmdSubRegion shStatement
 hi! link shCommandSub NormalFg

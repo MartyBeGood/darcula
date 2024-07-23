@@ -1,6 +1,6 @@
 ## Darcula
 
-![darcula](https://image.petitmur.beer/darcula.png)
+![darcula](./img/full_screen.png)
 
 :smiling_imp: A [Vim](https://www.vim.org/)/[Neovim](https://neovim.io/) color scheme reproduction of the official [JetBrains](https://www.jetbrains.com/) IDE Darcula theme
 
@@ -35,34 +35,23 @@ let g:lightline = { 'colorscheme': 'darculaOriginal' }
 ```
 NOTE: lightline already provides a "darcula" color scheme that I find simply bad. I strongly recommend to use mine instead (using `darculaOriginal` instead of `darcula` in the above config).
 
+**tree-sitter** support
+
+[treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+
+### support
+- Truecolor
+- 256 color
+- [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+- nvim [LSP](https://neovim.io/doc/user/lsp.html)
+
 ### VimScript API
 
-#### `list` colors: [ truecolor: `string`, 256color: `number` ]
-
-**truecolor:** `string`\
-hexadecimal color with a `#` prefix
-
-**256color:** `number`\
-should be between 16-255\
-ANSI 256 color (useful for non truecolor terminals that do not support `set termguicolors`)
-
-#### `dictionary` darcula#palette: { key: `string`: value: `colors` }
+#### darcula#palette
 the colors palette of Darcula
 
-#### `function` darcula#Hi(group: `string`, fg: `colors`, bg: `?colors`, style: `?string`)
-helper function to create highlight group
-
-**group:** `string`\
-group name
-
-**fg:** `colors`\
-foreground colors
-
-**bg:** `?colors`\
-background colors
-
-**style:** `?string`\
-text style (for possible values see `:h bold`)
+#### darcula#Hi
+helper function to create/modify highlight group
 
 #### example:
 ```
@@ -88,7 +77,7 @@ let g:gitgutter_sign_removed = '▶'
 hi! link CocErrorSign ErrorSign
 hi! link CocWarningSign WarningSign
 hi! link CocInfoSign InfoSign
-hi! link CocHintSign InfoSign
+hi! link CocHintSign HintSign
 hi! link CocErrorFloat Pmenu
 hi! link CocWarningFloat Pmenu
 hi! link CocInfoFloat Pmenu
@@ -111,10 +100,6 @@ hi! link ALEErrorSign ErrorSign
 hi! link ALEWarningSign WarningSign
 hi! link ALEInfoSign InfoSign
 ```
-
-### color support
-- Truecolor
-- 256 color
 
 ### credits
 [JetBrains](https://www.jetbrains.com/) for the original and awsome Darcula color scheme!
